@@ -15,7 +15,7 @@
             :key="todo"/>
             </tbody>
         </table>
-        <button @click="limits=10;start=0;" class="b2c" > << </button>
+        <button @click="limits=10;start=0;" class="b2" > begin </button>
         <button @click="limits=10;start=0;" class="b1" > 0 </button>
         <button @click="limits=20;start=10;" class="b2" > 1 </button>
         <button @click="limits=30;start=20;" class="b1" > 2 </button>
@@ -26,7 +26,7 @@
         <button @click="limits=80;start=70;" class="b2" > 7 </button>
         <button @click="limits=90;start=80;" class="b1" > 8 </button>
         <button @click="limits=100;start=90;" class="b2" > 9 </button>
-<button @click="limits=110;start=10;" class="b1" > 10 </button>
+        <button @click="limits=110;start=100;" class="b1" > 10 </button>
         <button @click="limits=120;start=110;" class="b2" > 11 </button>
         <button @click="limits=130;start=120;" class="b1" > 12 </button>
         <button @click="limits=140;start=130;" class="b2" > 13 </button>
@@ -45,7 +45,7 @@
         <button @click="limits=270;start=260;" class="b1" > 26 </button>
         <button @click="limits=280;start=270;" class="b2" > 27 </button>
         <button @click="limits=290;start=280;" class="b1" > 28 </button>
-        <button @click="limits=290;start=280;" class="b2" >  >></button>
+        <button @click="limits=290;start=280;" class="b2" >  end </button>
     </div>
 </template>
 <script>
