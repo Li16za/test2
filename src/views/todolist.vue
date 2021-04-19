@@ -18,8 +18,8 @@
             </tbody>
         </table>
         <button @click="limits=10;start=0;" class="b2" > begin </button>
-        <button v-for="n in 29" :key="n" @click="limits=10*n+10;start=10*n;" class="b1">{{n}}</button>
-        <button @click="limits=290;start=280;" class="b2" >  end </button>
+        <button v-for="n in 28" :key="n" @click="limits=10*n+10;start=10*n;" class="b1">{{n}}</button>
+        <button @click="limits=290;start=280;" class="b1" >  end </button>
         
     </div>
     </transition>
