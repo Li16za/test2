@@ -17,8 +17,9 @@ export default {
   height:100%;
   top:0;
   left:0;
-  position:fixed;
-  color:white;
+  overflow:auto;
+  position:absolute;
+  color:rgb(255, 255, 255);
   background-image: url('assets/fon.png');
 }
 </style>
