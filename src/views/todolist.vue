@@ -1,28 +1,51 @@
 <template>
-<transition name="fade">
-    <div class="load">
-        
+<div>
+    
         <table>
             <thead> 
                 <tr>      
-                <th><h3> небесное тело</h3></th>
-                <th><h4> Планета?</h4></th>
-                <th><h5>дата открытия и кто открыл</h5></th>
+                <th><h4> Имя объекта</h4></th>
+                <th><h4> Является ли объект планетой</h4></th>
+                <th><h4>Кем и когда открыта</h4></th>
+                <div class="load">
+                    <div class="form-group">
+                        <button class="btn btn-primary" @click.prevent="showModalOne = !showModalOne">Insert</button>
+                    </div>
+                <div class="customModal" v-if="showModalOne">
+                    <div class="customModalTitle"> INSERT</div>
+                    <div class="customModalBody">
+                        <form class="forms" action="">
+                            Небесное тело: <br>
+                            <input type="text" v-model="name">
+                            <br> Является ли объект планетой: <br>
+                            <input type="text" v-model="isPlanet">
+                            <br> Дата открытия: <br>
+                            <input type="text" v-model="discoveryDate">
+                            <br>Кто открыл: <br>
+                            <input type="text" v-model="discoveredBy">
+                            <br>
+                        </form>
+                    </div>
+                    <div class="customModalFooter">
+                        <button class="btn btn-primary" @click.prevent="addnew">Insert</button>
+                        <button class="close" @click.prevent="showModalOne = !showModalOne" >&times;</button>
+                    </div>
+</div>
+</div>
             </tr>
             </thead>
             <tbody>
             <todoitem
             v-for="todo in todos.slice(start,limits)"
             v-bind:todo="todo"
+            v-on:rem-todo="removetodo"
             :key="todo"/>
             </tbody>
         </table>
         <button @click="limits=10;start=0;" class="b2" > begin </button>
         <button v-for="n in 28" :key="n" @click="limits=10*n+10;start=10*n;" class="b1">{{n}}</button>
-        <button @click="limits=290;start=280;" class="b1" >  end </button>
-        
+        <button @click="limits=todos.length;start=todos.length-10;" class="b2" >  end </button>
     </div>
-    </transition>
 </template>
 <script>
 import todoitem from '@/views/todoitem'
@@ -31,14 +54,36 @@ export default {
         data(){
         return {
             limits:10,
-            start:0}
+            start:0,
+            text: '',
+            showModalOne: false,
+            name:'',
+            isPlanet:'',
+            discoveryDate:'',
+            discoveredBy:''
+        }
     },
     components:{
         todoitem
+    },
+    methods:{
+                addnew(){
+                    this.todos.push({
+                        'name':this.name,
+                        'isPlanet':this.isPlanet,
+                        'discoveryDate':this.discoveryDate,
+                        'discoveredBy':this.discoveredBy,
+        
+                })
+                this.closeModal()
+            },
+            removetodo(id) {
+        this.$emit('rem-todo',id)
+        }
     }
-}
+    }
 </script>
-<style scoped>
+<style>
 .b2{
 text-align:center;
 color:white;
@@ -62,8 +107,78 @@ th{
     background: radial-gradient(circle,rgba(6,12,236,1) 0%,rgba(0,2,51) 100%)
 }
 table{
-  margin:auto;
-  text-align: center;
-  color:white;
+    margin:auto;
+    text-align: center;
+    color:white;
 }
+.btn {
+outline: none !important;
+
+}
+.customModal .customModalFooter .close {
+line-height: 32px;
+color:white;
+background: radial-gradient(circle,rgba(6,12,236,1) 0%,rgba(0,2,51) 100%);
+width: 100px;
+height: 50px;
+border-radius:10px;
+font-size:36px;
+top:4px;
+position: relative;
+left: 75%;
+transform: translate(-50%, 0); 
+
+}
+.btn.btn-primary:hover {
+background-color: #4ECA78;
+border-color: #4ECA78;
+}
+
+.btn.btn-primary:active, .btn.btn-primary:focus {
+background-color: #4ECA78;
+border-color: #4ECA78;
+}
+.btn.btn-primary .fa {
+padding-right: 4px;
+
+}
+.customModal {
+box-shadow: 0px 1px 12px rgba(0, 0, 0, 0.4);
+left: calc(50vw - 300px);
+position: absolute;
+z-index: 999;
+width: 600px;
+top: 20vh;
+border-radius: 5px;
+overflow: hidden;
+}
+.customModal .customModalTitle {
+text-align: center;
+padding: 8px 12px;
+font-size: 1.5em;
+background: rgb(14, 6, 26);
+}
+
+.customModal .customModalBody {
+padding: 8px 12px;
+text-align: left;
+padding: 12px;
+background:black;
+}
+.customModal .customModalFooter {
+padding: 4px 12px;
+text-align: left;
+background: rgb(14, 6, 26);
+}
+.btn.btn-primary {
+color:white;
+background: radial-gradient(circle,rgba(6,12,236,1) 0%,rgba(0,2,51) 100%);
+border-color: rgb(255, 255, 255);
+outline: none;
+width: 100px;
+height: 50px;
+border-radius:10px;
+font-size:24px;
+}
+
 </style>
