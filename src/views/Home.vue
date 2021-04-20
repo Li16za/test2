@@ -1,8 +1,9 @@
 <template>
   <div class="home" >
-    <h1 >Planets</h1>
+    <h1 >Космические тела</h1>
     <todolist
-v-bind:todos="todos" />
+v-bind:todos="todos" 
+@rem-todo="remtodo"/>
   </div>
 </template>
 
@@ -23,6 +24,11 @@ export default {
       axios.get('https://api.le-systeme-solaire.net/rest/bodies/')
       .then(response=>this.todos=response.data.bodies)
       .catch(error=>{console.error(error);});
+  },
+  methods:{
+    remtodo(id){
+      this.todos=this.todos.filter(t => t.id !==id)
+  }
   }
 }
 </script>
