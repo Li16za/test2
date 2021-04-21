@@ -29,10 +29,10 @@ DELETE
 
 </div>
     <div class="customModalBody">
-        <p>Содержание окна</p>
+        <p>Вы уверены, что хотите удалить?</p>
     </div>
     <div class="customModalFooter">
-        <button class="btn btn-primary" @click.prevent="$emit('rem-todo',todo.id);showModalTree = !showModalTree;">DELETE</button>
+        <button class="btn btn-primary" @click.prevent="$emit('rem-todo',todo.id);showModalTree = !showModalTree;deleted=todo.id">DELETE</button>
 <button class="close" @click.prevent="showModalTree = !showModalTree" >&times;</button>    
     </div>
 </div>
@@ -52,6 +52,10 @@ export default {
         return {
             showModalTwo: false,
             showModalTree: false,
-    }}
+            deleted:'',
+            todosd:[]
+    }
+    
+    }
 }
 </script>
