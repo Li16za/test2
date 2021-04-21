@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="ap" >
+  <div id="app" class="app" >
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     <router-view/>
@@ -12,7 +12,7 @@ export default {
 }
 </script>
 <style lang="scss">
-.ap{
+.app{
   width:100%; 
   height:100%;
   top:0;
