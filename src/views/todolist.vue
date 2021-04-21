@@ -1,6 +1,14 @@
 <template>
-<div>
-    
+    <div>
+        <select name="filter" v-model="filter">
+                                        <option value="">Выберите значение</option>
+                                        <option value="sorting">name: a-z</option>
+                                        <option value="isplanetfalse">IsPlanet:false</option>
+                                        <option value="isplanettrue">IsPlanet:true</option>
+                                    </select>
+        <button class="btn btn-primary"> filter</button>
+        <input type="text" v-model="seach">
+        <button class="btn btn-primary"> seach</button>
         <table>
             <thead> 
                 <tr>      
@@ -14,41 +22,62 @@
                 <div class="customModal" v-if="showModalOne">
                     <div class="customModalTitle"> INSERT</div>
                     <div class="customModalBody">
-                        <form class="forms" action="">
-                            Небесное тело: <br>
-                            <input type="text" v-model="name">
-                            <br> Является ли объект планетой: <br>
-                            <input type="text" v-model="isPlanet">
-                            <br> Дата открытия: <br>
-                            <input type="text" v-model="discoveryDate">
-                            <br>Кто открыл: <br>
-                            <input type="text" v-model="discoveredBy">
-                            <br>
-                        </form>
+                        <table>
+                            <td>
+                                <form class="forms" action="">
+                                    Небесное тело: <br>
+                                    <input type="text" v-model="name">
+                                    <br> Является ли объект планетой: <br>
+                                    <select name="isPlanet" v-model="isPlanet">
+                                        <option value="">Выберите значение</option>
+                                        <option value="true">true</option>
+                                        <option value="false">false</option>
+                                    </select>
+                                    <br> Дата открытия: <br>
+                                    <input type="text" v-model="discoveryDate">
+                                    <br>Кто открыл: <br>
+                                    <input type="text" v-model="discoveredBy">
+                                    <br>
+                                </form>
+                            </td>
+                            <td>
+                                <ul>
+                                    <todoitem1
+                                        v-for="(todoi,index) in paginateddata"
+                                        v-bind:todoi="todoi"
+                                        :key="index"/>
+                                </ul>
+                                <button @click="pagenumber=0;" class="b2" > begin </button>
+                                <button :disabled="pagenumber===0" @click="prevpage" class="b1">back</button>
+                                <button :disabled="pagenumber>=pagecount-1" @click="nextpage" class="b2">next</button>
+                                <button @click="pagenumber=pagecount-1;" class="b1" >  end </button>
+                            </td>
+                        </table>
                     </div>
                     <div class="customModalFooter">
                         <button class="btn btn-primary" @click.prevent="addnew">Insert</button>
                         <button class="close" @click.prevent="showModalOne = !showModalOne" >&times;</button>
                     </div>
-</div>
-</div>
+                </div>
+                </div>
             </tr>
             </thead>
             <tbody>
             <todoitem
-            v-for="todo in todos.slice(start,limits)"
+            v-for="(todo,index) in todos.slice(start,limits)"
             v-bind:todo="todo"
             v-on:rem-todo="removetodo"
-            :key="todo"/>
+            :key="index"/>
             </tbody>
         </table>
         <button @click="limits=10;start=0;" class="b2" > begin </button>
-        <button v-for="n in 28" :key="n" @click="limits=10*n+10;start=10*n;" class="b1">{{n}}</button>
+        <button v-for="(n,index) in pagecount-1" :key="index" @click="limits=10*n+10;start=10*n;" class="b1">{{n}}</button>
         <button @click="limits=todos.length;start=todos.length-10;" class="b2" >  end </button>
     </div>
 </template>
 <script>
 import todoitem from '@/views/todoitem'
+import todoitem1 from '@/views/todoitem.1'
 export default {
     props:['todos'],
         data(){
@@ -60,27 +89,53 @@ export default {
             name:'',
             isPlanet:'',
             discoveryDate:'',
-            discoveredBy:''
+            discoveredBy:'',
+            pagenumber:0,
+            size:10,
+            seach:'',
+            sorting:'',
+            filter:'',
+            isplanetrue:'',
+            isplanetfalse:''
         }
     },
     components:{
-        todoitem
+        todoitem,
+        todoitem1,
     },
     methods:{
-                addnew(){
-                    this.todos.push({
-                        'name':this.name,
-                        'isPlanet':this.isPlanet,
-                        'discoveryDate':this.discoveryDate,
-                        'discoveredBy':this.discoveredBy,
-        
+            addnew(){
+                this.todos.push({
+                    'name':this.name,
+                    'isPlanet':this.isPlanet,
+                    'discoveryDate':this.discoveryDate,
+                    'discoveredBy':this.discoveredBy,
                 })
                 this.closeModal()
             },
+            nextpage(){
+                this.pagenumber++;
+            },
+            prevpage(){
+                this.pagenumber--;
+            },
             removetodo(id) {
-        this.$emit('rem-todo',id)
+                this.$emit('rem-todo',id)
+            } ,   
+    },
+    computed:{
+        pagecount(){
+            let l= this.todos.length;
+            let s=this.size;
+            return Math.ceil(l/s);
+        },
+        paginateddata(){
+            const starts = this.pagenumber*this.size;
+            const end= starts+this.size;
+            return this.todos.slice(starts,end);
         }
-    }
+    },
+
     }
 </script>
 <style>
@@ -88,12 +143,14 @@ export default {
 text-align:center;
 color:white;
 border:2px;
+font-size:20px;
 background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(27,26,159,1) 33%, rgba(19,19,201,1) 50%, rgba(12,78,224,1) 71%, rgba(0,212,255,1) 100%);
 }
 .b1{
 text-align:center;
 color:white;
 border:2px;
+font-size:20px;
 background: linear-gradient(90deg, rgba(0,212,255,1) 0%, rgba(12,78,224,1) 33%, rgba(19,19,201,1) 50%, rgba(27,26,159,1) 71%, rgba(2, 0, 36,1) 100%);
 }
 th{
@@ -106,7 +163,7 @@ th{
     background: rgb(6, 12, 236) ;
     background: radial-gradient(circle,rgba(6,12,236,1) 0%,rgba(0,2,51) 100%)
 }
-table{
+table,ul{
     margin:auto;
     text-align: center;
     color:white;
