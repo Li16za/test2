@@ -1,34 +1,54 @@
 <template>
   <div class="home" >
     <h1 >Космические тела</h1>
-    <todolist
-v-bind:todos="todos" 
-@rem-todo="remtodo"/>
+    <starlist
+v-bind:stars="filterstars" 
+@filters="SetFilter"
+/>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import axios from 'axios'
-import todolist from '@/views/todolist'
+
+import { mapGetters,mapActions } from 'vuex'
+import starlist from '@/components/starlist'
 export default {
   name: 'Home',
   components:{
-    todolist
+    starlist
   },
   data(){
     return {
-      todos:[]
+      filter:null,
+
   }},
   mounted(){
-      axios.get('https://api.le-systeme-solaire.net/rest/bodies/')
-      .then(response=>this.todos=response.data.bodies)
-      .catch(error=>{console.error(error);});
+      this.getData();
   },
   methods:{
-    remtodo(id){
-      this.todos=this.todos.filter(t => t.id !==id)
-  }
+    ...mapActions(["getData"]),
+    SetFilter(SkayBody){
+    this.filter=SkayBody;
+  },
+  },
+  computed: {
+    ...mapGetters(["stars"]),
+    filterstars(){
+      var starsFilter=this.stars;
+      if (!this.filter){
+        return starsFilter}
+      if (this.filter.search){
+        starsFilter=starsFilter.filter(t => t.name.includes(this.filter.search));
+      }
+      if(this.filter.isPlanets!="all"){
+        let isplanets=true;
+        if (this.filter.isPlanets=="isplanetfalse"){
+          isplanets=false;
+        }
+        starsFilter=starsFilter.filter(t => t.isPlanet ==isplanets);
+      }
+      return starsFilter;
+    }
   }
 }
 </script>
