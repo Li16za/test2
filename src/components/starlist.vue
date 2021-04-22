@@ -1,34 +1,43 @@
 <template>
     <div>
+        <div class="Title">
+            <div class="filter">
+                <h4>Search:</h4>
         <input @input="changeFilter" type="text" v-model="search" class="input">
-        <select @change="changeFilter" name="filter" v-model="filterplanet" class="input">
+            </div>
+        <div class="filter">
+        <h4>IsPlanet:</h4>
+        <select @change="changeFilter" name="filter" v-model="filterplanet" class="select">
             <option value="all">all</option>
             <option value="isplanetfalse">false</option>
             <option value="isplanettrue">true</option>
         </select>
-
-
+        </div>
+                    <button class="btn btn-primary" @click.prevent="showModalOne = !showModalOne">Insert</button>
+                <modal v-if="showModalOne"
+                v-bind:stars="stars"
+                v-on:close="close"
+                />
+                    <button class="btn btn-primary" @click.prevent="showModalFour = !showModalFour">просмотр удаленных записей</button>
+                <modal1 v-if="showModalFour"
+                v-on:close1="close1"
+                />
+            </div>
         <table>
             <thead> 
                 <tr>      
                 <th><h4> Имя объекта</h4></th>
                 <th><h4> Является ли объект планетой</h4></th>
                 <th><h4>Кем и когда открыта</h4></th>
-                <div class="form-group">
-                        <button class="btn btn-primary" @click.prevent="showModalOne = !showModalOne">Insert</button>
-                    </div>
-                <modal v-if="showModalOne"
-                v-bind:stars="stars"
-                v-on:close="close"
-                />
+                
             </tr>
             </thead>
 
             <tbody>
             <staritem
-            v-for="(star,index) in stars.slice(start,limits)"
+            v-for="star in stars.slice(start,limits)"
             v-bind:star="star"
-            :key="index"/>
+            :key="star.id+star.name"/>
             </tbody>
         </table>
         <button @click="limits=10;start=0;" class="b2" > begin </button>
@@ -39,7 +48,7 @@
 <script>
 import staritem from '@/components/staritem'
 import modal from '@/components/modal'
-
+import modal1 from '@/components/modal1'
 export default {
     props:['stars'],
         data(){
@@ -48,6 +57,7 @@ export default {
             start:0,
             text: '',
             showModalOne: false,
+            showModalFour: false,
             search:'',
             sorting:'',
             filterplanet:'all',
@@ -58,7 +68,8 @@ export default {
     },
     components:{
         staritem,
-        modal
+        modal,
+        modal1
     },
     methods:{ 
             changeFilter(){
@@ -67,6 +78,10 @@ export default {
             close()
             {
             this.showModalOne=!this.showModalOne;
+            },
+            close1()
+            {
+            this.showModalFour=!this.showModalFour;
             }
     },
     computed:{
@@ -81,6 +96,19 @@ export default {
 </script>
 
 <style lang="scss">
+.Title{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.filter{
+    display: flex;
+    align-items: center;
+    margin-right: 100px; }
+    .filter1{
+    display: flex;
+    align-items: center;
+    justify-content: center;}
 .b2{
 text-align:center;
 color:white;
@@ -109,6 +137,21 @@ table,ul{
     margin:auto;
     text-align: center;
     color:white;
+}
+.select{
+        width: 150px;
+   	    font-size: 12px;
+    	background:snow;
+        color: MidnightBlue;
+        padding: 3px 7px;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        border: 3px solid RoyalBlue;
+        height:37px;
+        font-family: "times new roman";
+        font-style: italic;
+        text-align:center;
 }
 .input{
     	width: 150px;
