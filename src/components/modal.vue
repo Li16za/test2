@@ -1,52 +1,50 @@
 <template>
     <div class="load">
-                <div class="customModal">
-                    <div class="customModalTitle"> INSERT</div>
-                    <div class="customModalBody">
-                        <table>
-                            <td>
-                                <form class="forms" action="">
-                                    Небесное тело: <br>
-                                    <input type="text" v-model="name" class="input">
-                                    <br> Является ли объект планетой: <br>
-                                    <select name="isPlanet" v-model="isPlanet" class="input">
-                                        <option value="">Выберите значение</option>
-                                        <option value="true">true</option>
-                                        <option value="false">false</option>
-                                    </select>
-                                    <br> Дата открытия: <br>
-                                    <input type="text" v-model="discoveryDate" class="input">
-                                    <br>Кто открыл: <br>
-                                    <input type="text" v-model="discoveredBy" class="input">
-                                    <br>
-                                </form>
-                            </td>
-                            <td>
-                                <input @input="changeFilter" type="text" v-model="search" class="input">
-                                <select @change="changeFilter" name="filter" v-model="filterplanet" class="input">
-                                    <option value="all">all</option>
-                                    <option value="isplanetfalse">false</option>
-                                    <option value="isplanettrue">true</option>
-                                </select>
-                                <ul>
-                                    <staritem1
-                                        v-for="(stari,index) in filterstars"
-                                        v-bind:stari="stari"
-                                        :key="index"/>
-                                </ul>
-                                <button @click="pagenumber=0;" class="b2" > begin </button>
-                                <button :disabled="pagenumber===0" @click="prevpage" class="b1">back</button>
-                                <button :disabled="pagenumber>=pagecount-1" @click="nextpage" class="b2">next</button>
-                                <button @click="pagenumber=pagecount-1;" class="b1" >  end </button>
-                            </td>
-                        </table>
-                    </div>
-                    <div class="customModalFooter">
-                        <button class="btn btn-primary" @click.prevent="addnew">Insert</button>
-                        <button class="close" @click.prevent="$emit('close')" >&times;</button>
-                    </div>
+        <div class="customModal">
+            <div class="customModalTitle"> INSERT</div>
+                <div class="customModalBody">
+                    <table>
+                        <td>
+                            Небесное тело: <br>
+                            <input type="text" v-model="name" class="input">
+                            <br> Является ли объект планетой: <br>
+                            <select name="isPlanet" v-model="isPlanet" class="input">
+                                <option value="">Выберите значение</option>
+                                <option value="true">true</option>
+                                <option value="false">false</option>
+                            </select>
+                            <br> Дата открытия: <br>
+                            <input type="text" v-model="discoveryDate" class="input">
+                            <br>Кто открыл: <br>
+                            <input type="text" v-model="discoveredBy" class="input">
+                            <br>
+                        </td>
+                        <td>
+                            <input @input="changeFilter" type="text" v-model="search" class="input">
+                            <select @change="changeFilter" name="filter" v-model="filterplanet" class="input">
+                                <option value="all">all</option>
+                                <option value="isplanetfalse">false</option>
+                                <option value="isplanettrue">true</option>
+                            </select>
+                            <ul>
+                                <staritem1
+                                    v-for="(stari,index) in filterstars"
+                                    v-bind:stari="stari"
+                                    :key="index"/>
+                            </ul>
+                            <button @click="pagenumber=0;" class="b2" > begin </button>
+                            <button :disabled="pagenumber===0" @click="prevpage" class="b1">back</button>
+                            <button :disabled="pagenumber>=pagecount-1" @click="nextpage" class="b2">next</button>
+                            <button @click="pagenumber=pagecount-1;" class="b1" >  end </button>
+                        </td>
+                    </table>
                 </div>
+                <div class="customModalFooter">
+                    <button class="btn btn-primary" @click.prevent="addnew">Insert</button>
+                    <button class="close" @click.prevent="$emit('close')" >&times;</button>
                 </div>
+            </div>
+        </div>
 </template>
 <script>
 import { mapGetters,mapMutations} from 'vuex'
@@ -79,6 +77,7 @@ export default {
             },
             addnew(){
                 var star={
+                    'id':this.name,
                     'name':this.name,
                     'isPlanet':this.isPlanet,
                     'discoveryDate':this.discoveryDate,
@@ -173,12 +172,10 @@ background: rgb(14, 6, 26);
 .btn.btn-primary {
 color:white;
 background: radial-gradient(circle,rgba(6,12,236,1) 0%,rgba(0,2,51,1) 100%);
-border-color: rgb(255, 255, 255);
-outline: none;
 width: 100px;
 height: 50px;
 border-radius:10px;
-font-size:24px;
+font-size:12px;
 }
 .customModal .customModalFooter .close {
 line-height: 32px;
