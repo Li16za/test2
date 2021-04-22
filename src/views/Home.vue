@@ -1,21 +1,25 @@
 <template>
   <div class="home" >
     <h1 >Космические тела</h1>
-    <starlist
+    <loader v-if="stars.length == 0" />
+    <starlist v-else
 v-bind:stars="filterstars" 
 @filters="SetFilter"
 />
   </div>
+  
 </template>
 
 <script>
 
 import { mapGetters,mapActions } from 'vuex'
 import starlist from '@/components/starlist'
+import loader from '@/components/Loader'
 export default {
   name: 'Home',
   components:{
-    starlist
+    starlist,
+    loader
   },
   data(){
     return {
